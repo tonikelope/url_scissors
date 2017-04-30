@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DsimTest</title>
+    <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+</head>
+<body>
+<h1>Url-Scissors {{ constant('VERSION') }}<img id="scissors" src="/images/scissors.png"></h1>
+<div id="url">{{url}}</div>
+<div>
+    <form action="" method="post">
+        <br>Choose parsing strategy: <input type="radio" name="radioStrategy" id="regex" {% if parserStrategy is not defined or parserStrategy == 'DsimTest\\UrlParser\\UrlParserStrategyRegex' %}checked="checked"{% endif %} value="regex"><label for="regex">Regex</label>
+        <input type="radio" name="radioStrategy" id="native" {% if parserStrategy == 'DsimTest\\UrlParser\\UrlParserStrategyNative' %}checked="checked"{% endif %} value="native"><label for="native">Native</label><br>
+        <input id="bsubmit" type="submit" value="Let's go!">
+    </form>
+</div>
+<br>
+{% if proto is defined %}
+    <div id="parsedUrl">
+        <div {% if not proto %}class="empty"{% endif %}><b>Protocol:</b> {% if proto %}<div class="token" id="proto">{{proto}}</div>{% endif %}</div>
+        <div {% if not sub %}class="empty"{% endif %}><b>Subdomain:</b> {% if sub %}<div class="token" id="sub">{{sub}}</div>{% endif %}</div>
+        <div {% if not dom %}class="empty"{% endif %}><b>Domain:</b> {% if dom %}<div class="token" id="dom">{{dom}}</div>{% endif %}</div>
+        <div {% if not tld %}class="empty"{% endif %}><b>TLD:</b> {% if tld %}<div class="token" id="tld">{{tld}}</div>{% endif %}</div>
+        <div {% if not dirs %}class="empty"{% endif %}><b>Directories:</b>
+            {% for val in dirs %}
+                <div class="token dirs">{{ val|e }}</div>{% if not loop.last %} -> {% endif %}
+            {% endfor %}
+        </div>
+        <div {% if not page %}class="empty"{% endif %}><b>Page:</b> {% if page %}<div class="token" id="page">{{page}}</div>{% endif %}</div>
+        <div {% if not ext %}class="empty"{% endif %}><b>Extension:</b> {% if ext %}<div class="token" id="ext">{{ext}}</div>{% endif %}</div>
+        <div {% if not params %}class="empty"{% endif %}><b>Parameters:</b>
+            {% for key, val in params %}
+                <div class="token param">{{ key }} = {{ val|e }}</div>
+            {% endfor %}
+        </div>
+        <div id="strategy"><b>Parsing strategy:</b> {% if parserStrategy == 'DsimTest\\UrlParser\\UrlParserStrategyRegex' %}REGEX{% else %}NATIVE{% endif %} ({{"%.3f ms"|format(time)}})</div>
+    </div>
+{% endif %}
+</body>
+</html>
