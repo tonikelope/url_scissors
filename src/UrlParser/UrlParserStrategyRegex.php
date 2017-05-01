@@ -73,13 +73,19 @@ class UrlParserStrategyRegex implements UrlParserInterface
                 PREG_SET_ORDER
             );
 
-            $params = [];
+            $parsed['params'] = [];
 
             foreach ($matchesPath as $match) {
-                $params[$match['var']] = urldecode($match['val']);
+                if (preg_match('/^(.+)\[\]$/', $match['var'], $matchVar)) {
+                    if (!isset($parsed['params'][$matchVar[1]])) {
+                        $parsed['params'][$matchVar[1]] = [urldecode($match['val'])];
+                    } else {
+                        $parsed['params'][$matchVar[1]][]=urldecode($match['val']);
+                    }
+                } else {
+                    $parsed['params'][$match['var']] = urldecode($match['val']);
+                }
             }
-
-            $parsed['params'] = $params;
         }
 
         return $parsed;

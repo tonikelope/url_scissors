@@ -32,7 +32,7 @@
         <div {% if not ext %}class="empty"{% endif %}><b>Extension:</b> {% if ext %}<div class="token" id="ext">{{ext}}</div>{% endif %}</div>
         <div {% if not params %}class="empty"{% endif %}><b>Parameters:</b>
             {% for key, val in params %}
-                <div class="token param">{{ key }} = {{ val|e }}</div>
+            <div class="token param">{% if val is iterable %}{{ key }} = <div class="token paramArray">{% for v in val %}<div class="token param">{{v}}</div>{% if not loop.last %} , {% endif %}{% endfor %}</div>{% else %}{{ key }} = {{ val|e }}{% endif %}</div>
             {% endfor %}
         </div>
         <div id="strategy"><b>Parsing strategy:</b> {% if parserStrategy == 'DsimTest\\UrlParser\\UrlParserStrategyRegex' %}REGEX{% else %}NATIVE{% endif %} ({{"%.3f ms"|format(time)}})</div>

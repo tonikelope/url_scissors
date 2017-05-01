@@ -116,6 +116,16 @@ abstract class UrlParserStrategyTest extends TestCase
                 'page' => 'test',
                 'ext' => 'php',
                 'params' => ['par' => '2', 'impar' => '"3"']
+            ]],
+            ['http://www.doctorsim.com/?v=4&p=4rc3g7c37x4n7g&c[]=1&c[]=2', [
+                'proto' => 'http',
+                'sub' => ['www'],
+                'dom' => 'doctorsim',
+                'tld' => 'com',
+                'dirs' => null,
+                'page' => null,
+                'ext' => null,
+                'params' => ['v' => '4', 'p' => '4rc3g7c37x4n7g', 'c' => ['1', '2']]
             ]]
         ];
     }
