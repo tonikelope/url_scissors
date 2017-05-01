@@ -42,7 +42,9 @@ class UrlParserStrategyNative implements UrlParserInterface
         }
 
         if (!empty($phpParsedUrl['path'])) {
-            if ($this->endsWith($phpParsedUrl['path'], '/')) {
+            $barraPos = strrpos($phpParsedUrl['path'], '/');
+
+            if ($barraPos == strlen($phpParsedUrl['path'])-1) {
                 $dirs = trim($phpParsedUrl['path'], '/');
 
                 if (!empty($dirs)) {
@@ -50,8 +52,6 @@ class UrlParserStrategyNative implements UrlParserInterface
                 }
             } else {
                 $puntoPos = strrpos($phpParsedUrl['path'], '.');
-
-                $barraPos = strrpos($phpParsedUrl['path'], '/');
 
                 if ($puntoPos !== false && $puntoPos > $barraPos && $puntoPos < strlen($phpParsedUrl['path'])-1
                     && $puntoPos - $barraPos > 1) {
@@ -79,12 +79,5 @@ class UrlParserStrategyNative implements UrlParserInterface
         }
 
         return $parsed;
-    }
-
-    private function endsWith($haystack, $needle)
-    {
-        $length = strlen($needle);
-
-        return ($length == 0 || (substr($haystack, -$length) === $needle));
     }
 }
