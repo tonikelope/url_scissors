@@ -11,11 +11,16 @@ namespace DsimTest\UrlParser;
 
 class UrlParserStrategyRegex implements UrlParserInterface
 {
+    /**
+     * @param $url - Url to parse
+     * @desc All tokens are OPTIONAL
+     * @return array - Parsed URL
+     */
     public function parse($url)
     {
         preg_match(
             '/^(?:(?P<proto>.*?)\:\/\/|\/\/)?(?:(?:[^\:]+\:[^@]+@)?(?P<host>[^\:\/]+)(?:\:[0-9]+)?)?'.
-            '(?P<path>(?:\/[^\/\?]*)+)?(?P<query>\?.*)?$/i',
+            '(?P<path>(?:\/[^\/\?]*)+)?(?:(?P<query>\?[^\#]+)(?:\#.*)?)?$/i',
             trim($url),
             $matches
         );
@@ -34,8 +39,9 @@ class UrlParserStrategyRegex implements UrlParserInterface
             $parsed['proto'] = $matches['proto'];
         }
 
-
         if (!empty($matches['host']) && filter_var($matches['host'], FILTER_VALIDATE_IP) === false) {
+            //If host IS NOT an IP address
+
             $names = explode('.', $matches['host']);
 
             if (count($names) > 1) {
@@ -51,6 +57,8 @@ class UrlParserStrategyRegex implements UrlParserInterface
 
         if (!empty($matches['path'])) {
             if (preg_match('/^(?P<dirs>.*\/)(?P<page>[^\/]+)\.(?P<ext>[^\.\/]+)$/i', $matches['path'], $matchesPath)) {
+                //Page and ext are present
+
                 $dirs = trim($matchesPath['dirs'], '/');
 
                 if (!empty($dirs)) {
@@ -61,6 +69,11 @@ class UrlParserStrategyRegex implements UrlParserInterface
 
                 $parsed['ext'] = $matchesPath['ext'];
             } else {
+                /*
+                    Example1: http://www.foo.com/one/two/.php (in this case .php is considered a DIRECTORY)
+                    Example2: http://www.foo.com/one/two/page.php/ (in this case page.php is considered a DIRECTORY)
+                */
+
                 $dirs = trim($matches['path'], '/');
 
                 if (!empty($dirs)) {
@@ -81,12 +94,16 @@ class UrlParserStrategyRegex implements UrlParserInterface
 
             foreach ($matchesPath as $match) {
                 if (preg_match('/^(.+)\[\]$/', $match['var'], $matchVar)) {
+                    //Array parameter
+
                     if (!isset($parsed['params'][$matchVar[1]])) {
                         $parsed['params'][$matchVar[1]] = [urldecode($match['val'])];
                     } else {
                         $parsed['params'][$matchVar[1]][]=urldecode($match['val']);
                     }
                 } else {
+                    //Non array parameter
+
                     $parsed['params'][$match['var']] = urldecode($match['val']);
                 }
             }

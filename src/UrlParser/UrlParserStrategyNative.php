@@ -11,6 +11,11 @@ namespace DsimTest\UrlParser;
 
 class UrlParserStrategyNative implements UrlParserInterface
 {
+    /**
+     * @param $url - Url to parse
+     * @desc All tokens are OPTIONAL (in this strategy REGEX are not used for any stuff)
+     * @return array - Parsed URL
+     */
     public function parse($url)
     {
         $parsed=[
@@ -30,6 +35,8 @@ class UrlParserStrategyNative implements UrlParserInterface
         }
 
         if (!empty($phpParsedUrl['host']) && filter_var($phpParsedUrl['host'], FILTER_VALIDATE_IP) === false) {
+            //If host IS NOT an IP address
+
             $names = explode('.', $phpParsedUrl['host']);
 
             if (count($names) > 1) {
@@ -47,6 +54,8 @@ class UrlParserStrategyNative implements UrlParserInterface
             $barraPos = strrpos($phpParsedUrl['path'], '/');
 
             if ($barraPos == strlen($phpParsedUrl['path'])-1) {
+                //If path ends with '/' there is NOT page and/or ext
+
                 $dirs = trim($phpParsedUrl['path'], '/');
 
                 if (!empty($dirs)) {
@@ -57,6 +66,8 @@ class UrlParserStrategyNative implements UrlParserInterface
 
                 if ($puntoPos !== false && $puntoPos > $barraPos && $puntoPos < strlen($phpParsedUrl['path'])-1
                     && $puntoPos - $barraPos > 1) {
+                    //Page and ext are present
+
                     $parsed['page'] = substr($phpParsedUrl['path'], $barraPos+1, $puntoPos-$barraPos-1);
 
                     $parsed['ext'] = substr($phpParsedUrl['path'], $puntoPos+1);
@@ -67,6 +78,11 @@ class UrlParserStrategyNative implements UrlParserInterface
                         $parsed['dirs'] = explode('/', $dirs);
                     }
                 } else {
+                    /*
+                        Example1: http://www.foo.com/one/two/.php (in this case .php is considered a DIRECTORY)
+                        Example2: http://www.foo.com/one/two/page.php/ (in this case page.php is considered a DIRECTORY)
+                    */
+
                     $dirs = trim($phpParsedUrl['path'], '/');
 
                     if (!empty($dirs)) {

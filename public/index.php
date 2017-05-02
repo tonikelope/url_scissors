@@ -61,11 +61,13 @@ $app->getContainer()['view'] = function () {
 };
 
 $app->get('[/{params:.*}]', function (Request $request, Response $response) {
+    //GET controller
 
     return render($this, $request, $response, new \DsimTest\UrlParser\UrlParserStrategyRegex());
 });
 
 $app->post('[/{params:.*}]', function (Request $request, Response $response) {
+    //POST controller
 
     $postData = $request->getParsedBody();
 
