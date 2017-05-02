@@ -14,7 +14,8 @@ class UrlParserStrategyRegex implements UrlParserInterface
     public function parse($url)
     {
         preg_match(
-            '/^(?P<proto>.*?):\/\/(?P<host>[^\:\/]+)(?:\:[0-9]+)?(?P<path>(?:\/[^\/\?]*)+)?(?P<query>\?.*)?$/i',
+            '/^(?:(?P<proto>.*?)\:\/\/|\/\/)?(?:(?:[^\:]+\:[^@]+@)?(?P<host>[^\:\/]+)(?:\:[0-9]+)?)?'.
+            '(?P<path>(?:\/[^\/\?]*)+)?(?P<query>\?.*)?$/i',
             trim($url),
             $matches
         );
@@ -29,9 +30,12 @@ class UrlParserStrategyRegex implements UrlParserInterface
             'ext' => null,
             'params' => null];
 
-        $parsed['proto'] = $matches['proto'];
+        if (!empty($matches['proto'])) {
+            $parsed['proto'] = $matches['proto'];
+        }
 
-        if (filter_var($matches['host'], FILTER_VALIDATE_IP) === false) {
+
+        if (!empty($matches['host']) && filter_var($matches['host'], FILTER_VALIDATE_IP) === false) {
             $names = explode('.', $matches['host']);
 
             if (count($names) > 1) {

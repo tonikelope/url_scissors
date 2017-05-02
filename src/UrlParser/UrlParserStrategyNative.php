@@ -25,9 +25,11 @@ class UrlParserStrategyNative implements UrlParserInterface
 
         $phpParsedUrl = parse_url($url);
 
-        $parsed['proto'] = $phpParsedUrl['scheme'];
+        if (!empty($phpParsedUrl['scheme'])) {
+            $parsed['proto'] = $phpParsedUrl['scheme'];
+        }
 
-        if (filter_var($phpParsedUrl['host'], FILTER_VALIDATE_IP) === false) {
+        if (!empty($phpParsedUrl['host']) && filter_var($phpParsedUrl['host'], FILTER_VALIDATE_IP) === false) {
             $names = explode('.', $phpParsedUrl['host']);
 
             if (count($names) > 1) {

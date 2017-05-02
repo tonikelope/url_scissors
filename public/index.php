@@ -7,7 +7,7 @@
  * Time: 21:09
  */
 
-define('VERSION', '0.0.3');
+define('VERSION', '0.0.4');
 define('PHP_WEB_SERVER_DEV', true);
 
 use \Psr\Http\Message\ServerRequestInterface as Request;

@@ -47,8 +47,8 @@ abstract class UrlParserStrategyTest extends TestCase
                 'ext' => null,
                 'params' => null
             ]],
-            ['http://aaa.www.doctorsim.com', [
-                'proto' => 'http',
+            ['//aaa.www.doctorsim.com', [
+                'proto' => null,
                 'sub' => ['aaa','www'],
                 'dom' => 'doctorsim',
                 'tld' => 'com',
@@ -57,11 +57,11 @@ abstract class UrlParserStrategyTest extends TestCase
                 'ext' => null,
                 'params' => null
             ]],
-            ['http://doctorsim.com/dsim/test/', [
-                'proto' => 'http',
+            ['/dsim/test/', [
+                'proto' => null,
                 'sub' => null,
-                'dom' => 'doctorsim',
-                'tld' => 'com',
+                'dom' => null,
+                'tld' => null,
                 'dirs' => ['dsim', 'test'],
                 'page' => null,
                 'ext' => null,
@@ -107,7 +107,7 @@ abstract class UrlParserStrategyTest extends TestCase
                 'ext' => 'html',
                 'params' => null
             ]],
-            ['http://www.doctorsim.com:80/dsim/test.php?par=2&impar=%223%22', [
+            ['http://username:password@www.doctorsim.com:80/dsim/test.php?par=2&impar=%223%22', [
                 'proto' => 'http',
                 'sub' => ['www'],
                 'dom' => 'doctorsim',
