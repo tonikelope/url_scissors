@@ -8,8 +8,6 @@
 
 namespace DsimTest\tests\unit;
 
-use PHPUnit\Framework\TestCase;
-
 class UrlParserStrategyNativeTest extends UrlParserStrategyTest
 {
     public static function setUpBeforeClass()

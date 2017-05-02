@@ -12,8 +12,9 @@ namespace DsimTest\UrlParser;
 class UrlParserStrategyRegex implements UrlParserInterface
 {
     /**
+     * All tokens are OPTIONAL (in this strategy REGEX are not used for any stuff)
+     *
      * @param $url - Url to parse
-     * @desc All tokens are OPTIONAL
      * @return array - Parsed URL
      */
     public function parse($url)
