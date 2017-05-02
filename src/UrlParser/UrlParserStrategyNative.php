@@ -79,10 +79,7 @@ class UrlParserStrategyNative implements UrlParserInterface
                         $parsed['dirs'] = explode('/', $dirs);
                     }
                 } else {
-                    /*
-                        Example1: http://www.foo.com/one/two/.php (in this case .php is considered a hidden FILE/DIR)
-                        Example2: http://www.foo.com/one/two/page.php/ (in this case page.php is considered a DIR)
-                    */
+                    //Example: http://www.foo.com/one/two/.php (in this case .php is considered a hidden FILE/DIR)
 
                     $dirs = trim($phpParsedUrl['path'], '/');
 
