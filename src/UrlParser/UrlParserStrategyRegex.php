@@ -71,8 +71,8 @@ class UrlParserStrategyRegex implements UrlParserInterface
                 $parsed['ext'] = $matchesPath['ext'];
             } else {
                 /*
-                    Example1: http://www.foo.com/one/two/.php (in this case .php is considered a DIRECTORY)
-                    Example2: http://www.foo.com/one/two/page.php/ (in this case page.php is considered a DIRECTORY)
+                    Example1: http://www.foo.com/one/two/.php (in this case .php is considered a hidden FILE/DIR)
+                    Example2: http://www.foo.com/one/two/page.php/ (in this case page.php is considered a DIR)
                 */
 
                 $dirs = trim($matches['path'], '/');
