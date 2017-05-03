@@ -7,7 +7,7 @@
  * Time: 21:09
  */
 
-define('VERSION', '0.0.4');
+define('VERSION', '0.0.5');
 define('PHP_WEB_SERVER_DEV', true);
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
@@ -38,7 +38,7 @@ function render(\Slim\Container $slimCont, Request $request, Response $response,
         'index.html',
         ['time' => ($parsingEndTime - $parsingStartTime)*1000,
             'url'=> $url,
-            'parserStrategy' => get_class($parserStrategy),
+            'parserStrategy' => substr(($parserClass=get_class($parserStrategy)), strrpos($parserClass, '\\')+1),
             'proto' => $coolUrl->getProto(),
             'sub' => !empty($coolUrl->getSub())?implode('.', $coolUrl->getSub()):null,
             'dom' => $coolUrl->getDom(),

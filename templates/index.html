@@ -11,8 +11,8 @@
 <div id="url">{{url}}</div>
 <div>
     <form action="" method="post">
-        <br>Choose parsing strategy: <input type="radio" name="radioStrategy" id="regex" {% if parserStrategy is not defined or parserStrategy == 'DsimTest\\UrlParser\\UrlParserStrategyRegex' %}checked="checked"{% endif %} value="regex"><label for="regex">Regex</label>
-        <input type="radio" name="radioStrategy" id="native" {% if parserStrategy == 'DsimTest\\UrlParser\\UrlParserStrategyNative' %}checked="checked"{% endif %} value="native"><label for="native">Native</label><br>
+        <br>Choose parsing strategy: <input type="radio" name="radioStrategy" id="regex" {% if parserStrategy is not defined or parserStrategy == 'UrlParserStrategyRegex' %}checked="checked"{% endif %} value="regex"><label for="regex">Regex</label>
+        <input type="radio" name="radioStrategy" id="native" {% if parserStrategy == 'UrlParserStrategyNative' %}checked="checked"{% endif %} value="native"><label for="native">Native</label><br>
         <input id="bsubmit" type="submit" value="Let's go!">
     </form>
 </div>
@@ -35,7 +35,7 @@
             <div class="token param">{% if val is iterable %}{{ key }} = <div class="token paramArray">{% for v in val %}<div class="token param">{{v}}</div>{% if not loop.last %} , {% endif %}{% endfor %}</div>{% else %}{{ key }} = {{ val|e }}{% endif %}</div>
             {% endfor %}
         </div>
-        <div id="strategy"><b>Parsing strategy:</b> {% if parserStrategy == 'DsimTest\\UrlParser\\UrlParserStrategyRegex' %}REGEX{% else %}NATIVE{% endif %} ({{"%.3f ms"|format(time)}})</div>
+        <div id="strategy"><b>Parsing strategy:</b> {% if parserStrategy == 'UrlParserStrategyRegex' %}REGEX{% else %}NATIVE{% endif %} ({{"%.3f ms"|format(time)}})</div>
     </div>
 {% endif %}
 </body>
