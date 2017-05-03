@@ -52,9 +52,9 @@ class UrlParserStrategyNative implements UrlParserInterface
         }
 
         if (!empty($phpParsedUrl['path'])) {
-            $barraPos = strrpos($phpParsedUrl['path'], '/');
+            $slashPos = strrpos($phpParsedUrl['path'], '/');
 
-            if ($barraPos == strlen($phpParsedUrl['path'])-1) {
+            if ($slashPos == strlen($phpParsedUrl['path'])-1) {
                 //If path ends with '/' there is NOT page and/or ext
 
                 $dirs = trim($phpParsedUrl['path'], '/');
@@ -63,15 +63,15 @@ class UrlParserStrategyNative implements UrlParserInterface
                     $parsed['dirs'] = explode('/', $dirs);
                 }
             } else {
-                $puntoPos = strrpos($phpParsedUrl['path'], '.');
+                $periodPos = strrpos($phpParsedUrl['path'], '.');
 
-                if ($puntoPos !== false && $puntoPos > $barraPos && $puntoPos < strlen($phpParsedUrl['path'])-1
-                    && $puntoPos - $barraPos > 1) {
+                if ($periodPos !== false && $periodPos > $slashPos && $periodPos < strlen($phpParsedUrl['path'])-1
+                    && $periodPos - $slashPos > 1) {
                     //Page and ext are present
 
-                    $parsed['page'] = substr($phpParsedUrl['path'], $barraPos+1, $puntoPos-$barraPos-1);
+                    $parsed['page'] = substr($phpParsedUrl['path'], $slashPos+1, $periodPos-$slashPos-1);
 
-                    $parsed['ext'] = substr($phpParsedUrl['path'], $puntoPos+1);
+                    $parsed['ext'] = substr($phpParsedUrl['path'], $periodPos+1);
 
                     $dirs = trim(dirname($phpParsedUrl['path']), '/');
 
@@ -79,7 +79,7 @@ class UrlParserStrategyNative implements UrlParserInterface
                         $parsed['dirs'] = explode('/', $dirs);
                     }
                 } else {
-                    //Example: http://www.foo.com/one/two/.php (in this case .php is considered a hidden FILE/DIR)
+                    //Example: http://www.foo.com/one/two/.php (in this case .php is considered as a hidden FILE/DIR)
 
                     $dirs = trim($phpParsedUrl['path'], '/');
 
