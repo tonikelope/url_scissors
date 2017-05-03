@@ -7,7 +7,7 @@
  * Time: 21:09
  */
 
-define('VERSION', '0.0.5');
+define('VERSION', '0.0.6');
 define('PHP_WEB_SERVER_DEV', true);
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
@@ -23,7 +23,7 @@ if (PHP_WEB_SERVER_DEV &&
     return false;
 }
 
-function render(\Slim\Container $slimCont, Request $request, Response $response, UrlParserInterface $parserStrategy)
+function render(\Slim\Views\Twig $view, Request $request, Response $response, UrlParserInterface $parserStrategy)
 {
     $url = $request->getUri()->getScheme().'://'.$request->getUri()->getHost().$_SERVER['REQUEST_URI'];
 
@@ -33,7 +33,7 @@ function render(\Slim\Container $slimCont, Request $request, Response $response,
 
     $parsingEndTime = microtime(true);
 
-    return $slimCont->view->render(
+    return $view->render(
         $response,
         'index.html',
         ['time' => ($parsingEndTime - $parsingStartTime)*1000,
@@ -63,7 +63,7 @@ $app->getContainer()['view'] = function () {
 $app->get('[/{params:.*}]', function (Request $request, Response $response) {
     //GET controller
 
-    return render($this, $request, $response, new \DsimTest\UrlParser\UrlParserStrategyRegex());
+    return render($this->view, $request, $response, new \DsimTest\UrlParser\UrlParserStrategyRegex());
 });
 
 $app->post('[/{params:.*}]', function (Request $request, Response $response) {
@@ -73,7 +73,11 @@ $app->post('[/{params:.*}]', function (Request $request, Response $response) {
 
     $parserStrategyClass = '\DsimTest\UrlParser\UrlParserStrategy'.ucwords($postData['radioStrategy']);
 
-    return render($this, $request, $response, new $parserStrategyClass());
+    if (!class_exists($parserStrategyClass)) {
+        $parserStrategyClass = '\DsimTest\UrlParser\UrlParserStrategyRegex';
+    }
+
+    return render($this->view, $request, $response, new $parserStrategyClass());
 });
 
 $app->run();
