@@ -12,7 +12,7 @@ namespace DsimTest\UrlParser;
 class UrlParserStrategyNative implements UrlParserInterface
 {
     /**
-     * All tokens are OPTIONAL (in this strategy REGEX are not used for any stuff)
+     * All tokens are OPTIONAL
      *
      * @param $url - Url to parse
      * @return array - Parsed URL
