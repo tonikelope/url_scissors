@@ -1,4 +1,6 @@
-# DsimTest
+# url_scissors
+
+A simple app using Slim Framework
 
 For testing with PHP built-in web server:
 
